@@ -137,18 +137,42 @@ public:
     void changeTemperature(double temperature) {
         waterTemperature = temperature;
     }
+
+    Aquarium& operator--() {
+    if (!fishes.empty()) {
+        delete fishes[0];
+        fishes.erase(fishes.begin());
+        std::cout << "рыбка удалена." << std::endl;
+    } else {
+        std::cout << "рыбка не удалена." << std::endl;
+    }
+    return *this;
+    }
+
+    Aquarium operator--(int) {
+        Aquarium copy(*this);
+        if (!fishes.empty()) {
+            delete fishes[0];
+            fishes.erase(fishes.begin());
+        std::cout << "рыбка удалена." << std::endl;
+    } else {
+        std::cout << "рыбка не удалена." << std::endl;
+        }
+        return copy;
+    }
+
 };
 
 int main() {
     Aquarium myAquarium(100, 50, 50, "Freshwater");
     TropicalFish* clownFish = new TropicalFish("Clownfish", 10, 5, 26);
-    ColdWaterFish* goldfish = new ColdWaterFish("Goldfish", 15, 3, "Day");
+    TropicalFish* Fish2 = new TropicalFish("Guppy", 5, 4, 28);
 
     myAquarium.addFish(clownFish);
-    myAquarium.addFish(goldfish);
+    myAquarium.addFish(Fish2);
 
-    delete clownFish;
-    delete goldfish;
+    --myAquarium;
+    Aquarium oldAquarium = myAquarium--;
 
     return 0;
 }
